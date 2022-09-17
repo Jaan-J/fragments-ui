@@ -14,5 +14,8 @@
   "license": "UNLICENSED",
   "dependencies": {
     "aws-amplify": "^4.3.35"
+  },
+  "devDependencies": {
+    "prettier": "2.7.1"
   }
 }
