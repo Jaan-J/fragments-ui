@@ -2,7 +2,11 @@
   "name": "fragments-ui",
   "private": true,
   "version": "0.0.1",
+  "source": "src/index.html",
   "description": "A simple web app to manage authentication with our User Pool and test our back-end fragments microservice.",
+  "scripts": {
+    "start": "parcel"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Jaan-J/fragments-ui.git"
