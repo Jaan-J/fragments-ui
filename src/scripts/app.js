@@ -29,14 +29,10 @@ async function init() {
     logoutBtn.disabled = true;
     return;
   }
-  
-  // if (user) {
-    sendBtn.onclick = () => {
-      console.log(fragmentInput.value);
-      postUserFragment(user, fragmentInput.value);
-    } 
-  // }
 
+  sendBtn.onclick = () => {
+    postUserFragment(user, fragmentInput.value);
+  } 
 
   // Log the user info for debugging purposes
   console.log({ user });

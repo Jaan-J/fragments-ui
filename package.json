@@ -17,7 +17,7 @@
     "querystring-es3": "^0.2.1"
   },
   "dependencies": {
-    "aws-amplify": "^4.3.35"
+    "aws-amplify": "^4.3.39"
   },
   "author": "Jaan Javed <jjaved3@myseneca.ca>",
   "license": "UNLICENSED"
