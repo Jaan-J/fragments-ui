@@ -10,6 +10,10 @@ async function init() {
   const sendBtn = document.querySelector("#send");
   const fragmentInput = document.querySelector("#fragment");
   const dropDownMenu = document.querySelector("#dropdown");
+  const getUserFragBtn = document.querySelector("#getUserFragBtn");
+  const getFragInfoByIdBtn = document.querySelector("#getFragInfoByIdBtn");
+  const fragmentIdInput = document.querySelector("#fragID");
+  const fragExpandedBtn = document.querySelector("#fragExpandedBtn");
 
   // Wire up event handlers to deal with login and logout.
   loginBtn.onclick = () => {
@@ -31,6 +35,22 @@ async function init() {
     return;
   }
 
+  getUserFragBtn.onclick = () => {
+    getUserFragments(user);
+  }
+
+  getFragInfoByIdBtn.onclick = () => {
+    if(fragmentIdInput.value != ""){
+      getUserFragments(user, fragmentIdInput.value, false);
+      return;
+    }
+    throw new Error("Please enter a fragment ID");
+  }
+
+  fragExpandedBtn.onclick = () => {
+    getUserFragments(user, null, true);
+  }
+
   sendBtn.onclick = () => {
     postUserFragment(user, fragmentInput.value, dropDownMenu.value);
   } 
@@ -47,7 +67,7 @@ async function init() {
   // Disable the Login button
   loginBtn.disabled = true;
 
-  getUserFragments(user);
+  // getUserFragments(user);
 }
 
 // Wait for the DOM to be ready, then start the app
