@@ -9,6 +9,7 @@ async function init() {
   const logoutBtn = document.querySelector("#logout");
   const sendBtn = document.querySelector("#send");
   const fragmentInput = document.querySelector("#fragment");
+  const dropDownMenu = document.querySelector("#dropdown");
 
   // Wire up event handlers to deal with login and logout.
   loginBtn.onclick = () => {
@@ -31,7 +32,7 @@ async function init() {
   }
 
   sendBtn.onclick = () => {
-    postUserFragment(user, fragmentInput.value);
+    postUserFragment(user, fragmentInput.value, dropDownMenu.value);
   } 
 
   // Log the user info for debugging purposes

@@ -14,11 +14,22 @@
     <section hidden id="user">
       <h2>Hello <span class="username"></span>!</h2>
     </section>
-    <!-- Create text input field with a send button beside it that passes the text to the postUserFragment api -->
+    <section>
+      <select id="dropdown">
+        <option value="" disabled selected>Select your option</option>
+        <option value="text/plain">text/plain</option>
+        <option value="text/plain; charset=utf-8">text/plain - charset=utf-8</option>
+        <option value="text/markdown">text/markdown</option>
+        <option value="text/html">text/html</option>
+        <option value="application/json">application/json</option>
+      </select>
+    </section>
+    <br>
     <section>
       <input type="text" id="fragment" />
       <button id="send">Send</button>
     </section>
+
 
   </body>
 </html>

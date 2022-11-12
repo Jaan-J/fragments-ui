@@ -25,13 +25,13 @@ export async function getUserFragments(user) {
   }
 }
 
-export async function postUserFragment(user, fragment) {
+export async function postUserFragment(user, fragment, fragmentType) {
   console.log('Posting user fragment data...');
   try {
     const res = await fetch(`${apiUrl}/v1/fragments`, {
       method: 'POST',
       headers:{
-        ...user.authorizationHeaders('text/plain')
+        ...user.authorizationHeaders(fragmentType)
       },
       body: fragment,
     });
