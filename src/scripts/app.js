@@ -15,6 +15,7 @@ async function init() {
   const fragmentIdInput = document.querySelector("#fragID");
   const fragExpandedBtn = document.querySelector("#fragExpandedBtn");
   const getFragByIdBtn = document.querySelector("#getFragByIdBtn");
+  const mdToHtmlBtn = document.querySelector("#mdToHtmlBtn");
 
   // Wire up event handlers to deal with login and logout.
   loginBtn.onclick = () => {
@@ -58,6 +59,11 @@ async function init() {
 
   fragExpandedBtn.onclick = () => {
     getUserFragments(user, null, true);
+  };
+
+  mdToHtmlBtn.onclick = () => {
+    const routeWithExtension = (fragmentIdInput.value + ".html");
+    getUserFragments(user, routeWithExtension, false, false);
   };
 
   sendBtn.onclick = () => {
