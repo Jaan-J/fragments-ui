@@ -14,7 +14,8 @@ export async function getUserFragments(
   user,
   fragmentId = null,
   isExpanded = null,
-  getMetadata = null
+  getMetadata = null,
+  isConversion = null
 ) {
   console.log("Requesting user fragments data...");
 
@@ -67,6 +68,7 @@ export async function getUserFragments(
     }
     return;
   }
+
   try {
     const res = await fetch(`${apiUrl}/v1/fragments/${fragmentId}`, {
       headers: user.authorizationHeaders(),
@@ -75,9 +77,19 @@ export async function getUserFragments(
       throw new Error(`${res.status} ${res.statusText}`);
     }
     const data = await res.json();
-    console.log("Got fragments data by id", { data });
+
+    var loggedResponseSuccess = "Got fragments data by id";
+    var loggedResponseError = "Unable to call GET /v1/fragments/{id}";
+    
+    if(isConversion === true) {
+      var loggedResponseSuccess = "Got converted fragments data";
+      var loggedResponseError = "Unable to call GET /v1/fragments/{id}.ext";
+    }
+
+    
+    console.log(loggedResponseSuccess, { data });
   } catch (err) {
-    console.error("Unable to call GET /v1/fragments/id", { err });
+    console.error(loggedResponseError, { err });
   }
 }
 

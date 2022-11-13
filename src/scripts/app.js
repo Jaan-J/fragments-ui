@@ -4,7 +4,7 @@ import { Auth, getUser } from "./auth";
 import { getUserFragments, postUserFragment } from "../api";
 async function init() {
   // Get our UI elements
-  const userSection = document.querySelector("#user");
+  const userSection = document.querySelector("#user");XMLDocument
   const loginBtn = document.querySelector("#login");
   const logoutBtn = document.querySelector("#logout");
   const sendBtn = document.querySelector("#send");
@@ -62,8 +62,8 @@ async function init() {
   };
 
   mdToHtmlBtn.onclick = () => {
-    const routeWithExtension = (fragmentIdInput.value + ".html");
-    getUserFragments(user, routeWithExtension, false, false);
+    const routeWithExtension = fragmentIdInput.value + ".html";
+    getUserFragments(user, routeWithExtension, false, false, true);
   };
 
   sendBtn.onclick = () => {
