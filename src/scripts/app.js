@@ -11,9 +11,10 @@ async function init() {
   const fragmentInput = document.querySelector("#fragment");
   const dropDownMenu = document.querySelector("#dropdown");
   const getUserFragBtn = document.querySelector("#getUserFragBtn");
-  const getFragInfoByIdBtn = document.querySelector("#getFragInfoByIdBtn");
+  const getFragMetadataBtn = document.querySelector("#getFragInfoByIdBtn");
   const fragmentIdInput = document.querySelector("#fragID");
   const fragExpandedBtn = document.querySelector("#fragExpandedBtn");
+  const getFragByIdBtn = document.querySelector("#getFragByIdBtn");
 
   // Wire up event handlers to deal with login and logout.
   loginBtn.onclick = () => {
@@ -37,23 +38,31 @@ async function init() {
 
   getUserFragBtn.onclick = () => {
     getUserFragments(user);
-  }
+  };
 
-  getFragInfoByIdBtn.onclick = () => {
-    if(fragmentIdInput.value != ""){
-      getUserFragments(user, fragmentIdInput.value, false);
+  getFragByIdBtn.onclick = () => {
+    if (fragmentIdInput.value != "") {
+      getUserFragments(user, fragmentIdInput.value, false, false);
       return;
     }
     throw new Error("Please enter a fragment ID");
-  }
+  };
+
+  getFragMetadataBtn.onclick = () => {
+    if (fragmentIdInput.value != "") {
+      getUserFragments(user, fragmentIdInput.value, false, true);
+      return;
+    }
+    throw new Error("Please enter a fragment ID");
+  };
 
   fragExpandedBtn.onclick = () => {
     getUserFragments(user, null, true);
-  }
+  };
 
   sendBtn.onclick = () => {
     postUserFragment(user, fragmentInput.value, dropDownMenu.value);
-  } 
+  };
 
   // Log the user info for debugging purposes
   console.log({ user });

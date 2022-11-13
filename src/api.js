@@ -1,5 +1,7 @@
 // src/api.js
 
+import { readFragmentData } from "../../fragments/src/model/data";
+
 // fragments microservice API, defaults to localhost:8080
 const apiUrl = process.env.API_URL || "http://localhost:8080";
 
@@ -8,10 +10,15 @@ const apiUrl = process.env.API_URL || "http://localhost:8080";
  * fragments microservice (currently only running locally). We expect a user
  * to have an `idToken` attached, so we can send that along with the request.
  */
-export async function getUserFragments(user, fragmentId = null, isExpanded = null) {
+export async function getUserFragments(
+  user,
+  fragmentId = null,
+  isExpanded = null,
+  getMetadata = null
+) {
   console.log("Requesting user fragments data...");
 
-  if (!fragmentId && !isExpanded) {
+  if (!fragmentId && !isExpanded && !getMetadata) {
     try {
       const res = await fetch(`${apiUrl}/v1/fragments`, {
         // Generate headers with the proper Authorization bearer token to pass
@@ -28,13 +35,12 @@ export async function getUserFragments(user, fragmentId = null, isExpanded = nul
     return;
   }
 
-  if(isExpanded === true) {
+  if (isExpanded === true) {
     try {
       const res = await fetch(`${apiUrl}/v1/fragments?expand=1`, {
         // Generate headers with the proper Authorization bearer token to pass
         headers: user.authorizationHeaders(),
       });
-      console.log("working\n");
       if (!res.ok) {
         throw new Error(`${res.status} ${res.statusText}`);
       }
@@ -46,8 +52,23 @@ export async function getUserFragments(user, fragmentId = null, isExpanded = nul
     return;
   }
 
-  try{
-    const res = await fetch(`${apiUrl}/v1/fragments/${fragmentId}/info`, {
+  if (getMetadata === true) {
+    try {
+      const res = await fetch(`${apiUrl}/v1/fragments/${fragmentId}/info`, {
+        headers: user.authorizationHeaders(),
+      });
+      if (!res.ok) {
+        throw new Error(`${res.status} ${res.statusText}`);
+      }
+      const data = await res.json();
+      console.log("Got fragments metadata by id", { data });
+    } catch (err) {
+      console.error("Unable to call GET /v1/fragments/id/info", { err });
+    }
+    return;
+  }
+  try {
+    const res = await fetch(`${apiUrl}/v1/fragments/${fragmentId}`, {
       headers: user.authorizationHeaders(),
     });
     if (!res.ok) {
@@ -55,8 +76,7 @@ export async function getUserFragments(user, fragmentId = null, isExpanded = nul
     }
     const data = await res.json();
     console.log("Got fragments data by id", { data });
-  }
-  catch (err) {
+  } catch (err) {
     console.error("Unable to call GET /v1/fragments/id", { err });
   }
 }
