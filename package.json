@@ -5,7 +5,8 @@
   "source": "src/index.html",
   "description": "A simple web app to manage authentication with our User Pool and test our back-end fragments microservice.",
   "scripts": {
-    "start": "parcel"
+    "start": "parcel",
+    "build": "parcel build"
   },
   "repository": {
     "type": "git",

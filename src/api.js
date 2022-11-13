@@ -1,6 +1,6 @@
 // src/api.js
 
-import { readFragmentData } from "../../fragments/src/model/data";
+// import { readFragmentData } from "../../fragments/src/model/data";
 
 // fragments microservice API, defaults to localhost:8080
 const apiUrl = process.env.API_URL || "http://localhost:8080";
