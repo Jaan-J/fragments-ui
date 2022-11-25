@@ -1,7 +1,7 @@
 // src/app.js
 
 import { Auth, getUser } from "./auth";
-import { getUserFragments, postUserFragment } from "../api";
+import { getUserFragments, postUserFragment, getFragmentData, getFragmentMetaData, getAllExpandedData } from "../api";
 async function init() {
   // Get our UI elements
   const userSection = document.querySelector("#user");XMLDocument
@@ -43,7 +43,7 @@ async function init() {
 
   getFragByIdBtn.onclick = () => {
     if (fragmentIdInput.value != "") {
-      getUserFragments(user, fragmentIdInput.value, false, false);
+      getFragmentData(user, fragmentIdInput.value);
       return;
     }
     throw new Error("Please enter a fragment ID");
@@ -51,19 +51,19 @@ async function init() {
 
   getFragMetadataBtn.onclick = () => {
     if (fragmentIdInput.value != "") {
-      getUserFragments(user, fragmentIdInput.value, false, true);
+      getFragmentMetaData(user, fragmentIdInput.value);
       return;
     }
     throw new Error("Please enter a fragment ID");
   };
 
   fragExpandedBtn.onclick = () => {
-    getUserFragments(user, null, true);
+    getAllExpandedData(user);
   };
 
   mdToHtmlBtn.onclick = () => {
     const routeWithExtension = fragmentIdInput.value + ".html";
-    getUserFragments(user, routeWithExtension, false, false, true);
+    getFragmentData(user, routeWithExtension);
   };
 
   sendBtn.onclick = () => {

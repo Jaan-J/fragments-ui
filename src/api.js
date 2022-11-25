@@ -1,7 +1,5 @@
 // src/api.js
 
-// import { readFragmentData } from "../../fragments/src/model/data";
-
 // fragments microservice API, defaults to localhost:8080
 const apiUrl = process.env.API_URL || "http://localhost:8080";
 
@@ -10,86 +8,81 @@ const apiUrl = process.env.API_URL || "http://localhost:8080";
  * fragments microservice (currently only running locally). We expect a user
  * to have an `idToken` attached, so we can send that along with the request.
  */
-export async function getUserFragments(
-  user,
-  fragmentId = null,
-  isExpanded = null,
-  getMetadata = null,
-  isConversion = null
-) {
+export async function getUserFragments(user) {
   console.log("Requesting user fragments data...");
-
-  if (!fragmentId && !isExpanded && !getMetadata) {
-    try {
-      const res = await fetch(`${apiUrl}/v1/fragments`, {
-        // Generate headers with the proper Authorization bearer token to pass
-        headers: user.authorizationHeaders(),
-      });
-      if (!res.ok) {
-        throw new Error(`${res.status} ${res.statusText}`);
-      }
-      const data = await res.json();
-      console.log("Got user fragments data", { data });
-    } catch (err) {
-      console.error("Unable to call GET /v1/fragments", { err });
-    }
-    return;
-  }
-
-  if (isExpanded === true) {
-    try {
-      const res = await fetch(`${apiUrl}/v1/fragments?expand=1`, {
-        // Generate headers with the proper Authorization bearer token to pass
-        headers: user.authorizationHeaders(),
-      });
-      if (!res.ok) {
-        throw new Error(`${res.status} ${res.statusText}`);
-      }
-      const data = await res.json();
-      console.log("Got expanded user fragments data", { data });
-    } catch (err) {
-      console.error("Unable to call GET /v1/fragments?expand=1", { err });
-    }
-    return;
-  }
-
-  if (getMetadata === true) {
-    try {
-      const res = await fetch(`${apiUrl}/v1/fragments/${fragmentId}/info`, {
-        headers: user.authorizationHeaders(),
-      });
-      if (!res.ok) {
-        throw new Error(`${res.status} ${res.statusText}`);
-      }
-      const data = await res.json();
-      console.log("Got fragments metadata by id", { data });
-    } catch (err) {
-      console.error("Unable to call GET /v1/fragments/id/info", { err });
-    }
-    return;
-  }
-
   try {
-    const res = await fetch(`${apiUrl}/v1/fragments/${fragmentId}`, {
+    const res = await fetch(`${apiUrl}/v1/fragments`, {
+      // Generate headers with the proper Authorization bearer token to pass
       headers: user.authorizationHeaders(),
     });
     if (!res.ok) {
       throw new Error(`${res.status} ${res.statusText}`);
     }
     const data = await res.json();
+    console.log("Got user fragments data", { data });
+  } catch (err) {
+    console.error("Unable to call GET /v1/fragments", { err });
+  }
+  return;
+}
 
-    var loggedResponseSuccess = "Got fragments data by id";
-    var loggedResponseError = "Unable to call GET /v1/fragments/{id}";
-    
-    if(isConversion === true) {
-      var loggedResponseSuccess = "Got converted fragments data";
-      var loggedResponseError = "Unable to call GET /v1/fragments/{id}.ext";
+export async function getAllExpandedData(user) {
+  console.log("Requesting all expanded data...");
+  try {
+    const res = await fetch(`${apiUrl}/v1/fragments?expand=1`, {
+      headers: user.authorizationHeaders(),
+    });
+    if (!res.ok) {
+      throw new Error(`${res.status} ${res.statusText}`);
+    }
+    const data = await res.json();
+    console.log("Got expanded user fragments data", { data });
+  } catch (err) {
+    console.error("Unable to call GET /v1/fragments?expand=1", { err });
+  }
+  return;
+}
+
+export async function getFragmentMetaData(user, id) {
+  console.log(`Requesting a fragment metadata by id: ${id}`);
+  try {
+    const res = await fetch(`${apiUrl}/v1/fragments/${id}/info`, {
+      headers: user.authorizationHeaders(),
+    });
+
+    if (!res.ok) {
+      throw new Error(`${res.status} ${res.statusText}`);
     }
 
-    
-    console.log(loggedResponseSuccess, { data });
+    const data = await res.json();
+    console.log("Got fragment metadata by ID:", { data });
   } catch (err) {
-    console.error(loggedResponseError, { err });
+    console.error("Unable to call GET /v1/fragments/:id/info", { err });
+  }
+}
+
+export async function getFragmentData(user, id) {
+  console.log(`Requesting a fragment data by id: ${id}`);
+  try {
+    const res = await fetch(`${apiUrl}/v1/fragments/${id}`, {
+      headers: user.authorizationHeaders(),
+    });
+
+    if (!res.ok) {
+      throw new Error(`${res.status} ${res.statusText}`);
+    }
+    let data;
+    if (res.headers.get("content-type").startsWith("text/")) {
+      data = await res.text();
+    } else if (res.headers.get("content-type").startsWith("application/json")) {
+      data = await res.json();
+    } else {
+      data = await res.blob();
+    }
+    console.log("Got fragment data by id", { data });
+    return { contentType: res.headers.get("content-type"), data: data };
+  } catch (err) {
+    console.error("Unable to call GET /v1/fragments/:id", { err });
   }
 }
 
