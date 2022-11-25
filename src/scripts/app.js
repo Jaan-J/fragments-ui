@@ -1,10 +1,18 @@
 // src/app.js
 
 import { Auth, getUser } from "./auth";
-import { getUserFragments, postUserFragment, getFragmentData, getFragmentMetaData, getAllExpandedData } from "../api";
+import {
+  getUserFragments,
+  postUserFragment,
+  getFragmentData,
+  getFragmentMetaData,
+  getAllExpandedData,
+  deleteUserFragment,
+} from "../api";
 async function init() {
   // Get our UI elements
-  const userSection = document.querySelector("#user");XMLDocument
+  const userSection = document.querySelector("#user");
+  XMLDocument;
   const loginBtn = document.querySelector("#login");
   const logoutBtn = document.querySelector("#logout");
   const sendBtn = document.querySelector("#send");
@@ -16,7 +24,7 @@ async function init() {
   const fragExpandedBtn = document.querySelector("#fragExpandedBtn");
   const getFragByIdBtn = document.querySelector("#getFragByIdBtn");
   const mdToHtmlBtn = document.querySelector("#mdToHtmlBtn");
-
+  const delFragButton = document.querySelector("#deleteFragBtn");
   // Wire up event handlers to deal with login and logout.
   loginBtn.onclick = () => {
     // Sign-in via the Amazon Cognito Hosted UI (requires redirects), see:
@@ -49,6 +57,14 @@ async function init() {
     throw new Error("Please enter a fragment ID");
   };
 
+  delFragButton.onclick = () => {
+    if (fragmentIdInput.value != "") {
+      deleteUserFragment(user, fragmentIdInput.value);
+      return;
+    }
+    throw new Error("Please enter a fragment ID");
+  };
+
   getFragMetadataBtn.onclick = () => {
     if (fragmentIdInput.value != "") {
       getFragmentMetaData(user, fragmentIdInput.value);
@@ -62,8 +78,12 @@ async function init() {
   };
 
   mdToHtmlBtn.onclick = () => {
-    const routeWithExtension = fragmentIdInput.value + ".html";
-    getFragmentData(user, routeWithExtension);
+    if (fragmentIdInput.value != "") {
+      const routeWithExtension = fragmentIdInput.value + ".html";
+      getFragmentData(user, routeWithExtension);
+      return;
+    }
+    throw new Error("Please enter a fragment ID");
   };
 
   sendBtn.onclick = () => {
