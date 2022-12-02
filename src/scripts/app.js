@@ -8,6 +8,7 @@ import {
   getFragmentMetaData,
   getAllExpandedData,
   deleteUserFragment,
+  updateUserFragment
 } from "../api";
 async function init() {
   // Get our UI elements
@@ -25,6 +26,7 @@ async function init() {
   const getFragByIdBtn = document.querySelector("#getFragByIdBtn");
   const mdToHtmlBtn = document.querySelector("#mdToHtmlBtn");
   const delFragButton = document.querySelector("#deleteFragBtn");
+  const updateFragButton = document.querySelector("#updateFragBtn");
   // Wire up event handlers to deal with login and logout.
   loginBtn.onclick = () => {
     // Sign-in via the Amazon Cognito Hosted UI (requires redirects), see:
@@ -71,6 +73,16 @@ async function init() {
       return;
     }
     throw new Error("Please enter a fragment ID");
+  };
+
+  updateFragButton.onclick = () => {
+    if (fragmentIdInput.value === "") {
+      throw new Error("Please enter a fragment ID");
+    }
+    if (fragmentInput.value === "") {
+      throw new Error("Please enter a fragment");
+    }
+    updateUserFragment(user, fragmentIdInput.value, fragmentInput.value, dropDownMenu.value);
   };
 
   fragExpandedBtn.onclick = () => {

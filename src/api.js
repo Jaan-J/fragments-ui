@@ -122,3 +122,23 @@ export async function deleteUserFragment(user, id) {
     console.error("Unable to call DELETE /v1/fragments", { err });
   }
 }
+
+export async function updateUserFragment(user, id, fragment, fragmentType) {
+  console.log('Updating a fragment data by using its ID');
+  try {
+    const res = await fetch(`${apiUrl}/v1/fragments/${id}`, {
+      method: 'PUT',
+      headers: {
+        ...user.authorizationHeaders(fragmentType),
+      },
+      body: fragment,
+    });
+    if (!res.ok) {
+      throw new Error(`${res.status} ${res.statusText}`);
+    }
+    const data = await res.json();
+    console.log('Updated fragments data', { data });
+  } catch (err) {
+    console.error('Unable to call PUT /v1/fragments', { err });
+  }
+}
