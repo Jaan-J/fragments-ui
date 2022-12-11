@@ -21,11 +21,16 @@
         <option value="text/markdown">text/markdown</option>
         <option value="text/html">text/html</option>
         <option value="application/json">application/json</option>
+        <option value="image/png">image/png</option>
+        <option value="image/jpeg">image/jpeg</option>
+        <option value="image/webp">image/webp</option>
+        <option value="image/gif">image/gif</option>
       </select>
     </section>
     <br>
     <section>
       <input type="text" id="fragment" placeholder="Enter desired fragment"/>
+      <input type="file" name="image" id="imageFile" accept="image/*" hidden/>
       <button id="send">Send</button>
     </section>
     <br>
@@ -33,9 +38,19 @@
       <input type="text" id="fragID" placeholder="Enter fragment ID" />
       <button id="getFragInfoByIdBtn">Get fragment metadata by id</button>
       <button id="getFragByIdBtn">Get fragment by id</button>
-      <button id ="mdToHtmlBtn">Convert markdown to HTML</button>
       <button id ="deleteFragBtn">Delete fragment</button>
       <button id ="updateFragBtn">Update fragment</button>
+    </section>
+    <br>
+    <section>
+      <button id="convertToTxt">Convert fragment to text</button>
+      <button id="convertToMarkdown">Convert fragment to markdown</button>
+      <button id="convertToHtml">Convert fragment to HTML</button>
+      <button id="convertToJson">Convert fragment to JSON</button>
+      <button id="convertToPng">Convert fragment to PNG</button>
+      <button id="convertToJpeg">Convert fragment to JPEG</button>
+      <button id="convertToWebp">Convert fragment to WEBP</button>
+      <button id="convertToGif">Convert fragment to GIF</button>
     </section>
     <br>
     <section>

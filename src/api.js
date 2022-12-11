@@ -61,10 +61,17 @@ export async function getFragmentMetaData(user, id) {
   }
 }
 
-export async function getFragmentData(user, id) {
-  console.log(`Requesting a fragment data by id: ${id}`);
+export async function getFragmentData(user, id, ext) {
+  let fetchRoute;
+  if(!ext) {
+     fetchRoute = `${apiUrl}/v1/fragments/${id}`;
+     console.log(`Requesting a fragment data by id: ${id}`);
+  } else {
+     fetchRoute = `${apiUrl}/v1/fragments/${id}${ext}`;
+     console.log(`Requesting a fragment data by id: ${id}${ext}`);
+  }
   try {
-    const res = await fetch(`${apiUrl}/v1/fragments/${id}`, {
+    const res = await fetch(fetchRoute, {
       headers: user.authorizationHeaders(),
     });
 
@@ -80,7 +87,7 @@ export async function getFragmentData(user, id) {
       data = await res.blob();
     }
     console.log("Got fragment data by id", { data });
-    return { contentType: res.headers.get("content-type"), data: data };
+    // return { contentType: res.headers.get("content-type"), data: data };
   } catch (err) {
     console.error("Unable to call GET /v1/fragments/:id", { err });
   }

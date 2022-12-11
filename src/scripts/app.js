@@ -8,7 +8,7 @@ import {
   getFragmentMetaData,
   getAllExpandedData,
   deleteUserFragment,
-  updateUserFragment
+  updateUserFragment,
 } from "../api";
 async function init() {
   // Get our UI elements
@@ -24,9 +24,20 @@ async function init() {
   const fragmentIdInput = document.querySelector("#fragID");
   const fragExpandedBtn = document.querySelector("#fragExpandedBtn");
   const getFragByIdBtn = document.querySelector("#getFragByIdBtn");
-  const mdToHtmlBtn = document.querySelector("#mdToHtmlBtn");
   const delFragButton = document.querySelector("#deleteFragBtn");
   const updateFragButton = document.querySelector("#updateFragBtn");
+  const imageInput = document.querySelector("#imageFile");
+
+
+  const convToText = document.querySelector("#convertToTxt");
+  const convToMD = document.querySelector("#convertToMarkdown");
+  const convToHTML = document.querySelector("#convertToHtml");
+  const convToJSON = document.querySelector("#convertToJson");
+  const convToPng = document.querySelector("#convertToPng");
+  const convToJpeg = document.querySelector("#convertToJpeg");
+  const convToWebp = document.querySelector("#convertToWebp");
+  const convToGif = document.querySelector("#convertToGif");
+
   // Wire up event handlers to deal with login and logout.
   loginBtn.onclick = () => {
     // Sign-in via the Amazon Cognito Hosted UI (requires redirects), see:
@@ -46,6 +57,23 @@ async function init() {
     logoutBtn.disabled = true;
     return;
   }
+  // if user selects any image from the dropdown menu, the image input will be displayed
+  dropDownMenu.onchange = () => {
+    if (
+      dropDownMenu.value === "image/png" ||
+      dropDownMenu.value === "image/jpeg" ||
+      dropDownMenu.value === "image/gif" ||
+      dropDownMenu.value === "image/webp"
+    ) {
+      //imageFile is displayed
+      imageInput.style.display = "block";
+      fragmentInput.style.display = "none";
+    } else {
+      //imageFile is hidden
+      imageInput.style.display = "none";
+      fragmentInput.style.display = "block";
+    }
+  };
 
   getUserFragBtn.onclick = () => {
     getUserFragments(user);
@@ -82,23 +110,93 @@ async function init() {
     if (fragmentInput.value === "") {
       throw new Error("Please enter a fragment");
     }
-    updateUserFragment(user, fragmentIdInput.value, fragmentInput.value, dropDownMenu.value);
+    updateUserFragment(
+      user,
+      fragmentIdInput.value,
+      fragmentInput.value,
+      dropDownMenu.value
+    );
   };
 
   fragExpandedBtn.onclick = () => {
     getAllExpandedData(user);
   };
 
-  mdToHtmlBtn.onclick = () => {
+
+
+
+  convToText.onclick = () => {
     if (fragmentIdInput.value != "") {
-      const routeWithExtension = fragmentIdInput.value + ".html";
-      getFragmentData(user, routeWithExtension);
+      getFragmentData(user, fragmentIdInput.value, '.txt');
+      return;
+    }
+    throw new Error("Please enter a fragment ID");
+  };
+
+  convToMD.onclick = () => {
+    if (fragmentIdInput.value != "") {
+      getFragmentData(user, fragmentIdInput.value, '.md');
+      return;
+    }
+    throw new Error("Please enter a fragment ID");
+  };
+  
+  convToHTML.onclick = () => {
+    if (fragmentIdInput.value != "") {
+      getFragmentData(user, fragmentIdInput.value, '.html');
+      return;
+    }
+    throw new Error("Please enter a fragment ID");
+  };
+
+  convToPng.onclick = () => {
+    if (fragmentIdInput.value != "") {
+      getFragmentData(user, fragmentIdInput.value, '.png');
+      return;
+    }
+    throw new Error("Please enter a fragment ID");
+  };
+
+  convToJpeg.onclick = () => {
+    if (fragmentIdInput.value != "") {
+      getFragmentData(user, fragmentIdInput.value,'.jpg');
+      return;
+    }
+    throw new Error("Please enter a fragment ID");
+  };
+
+  convToWebp.onclick = () => {
+    if (fragmentIdInput.value != "") {
+      getFragmentData(user, fragmentIdInput.value, '.webp');
+      return;
+    }
+    throw new Error("Please enter a fragment ID");
+  };
+
+  convToGif.onclick = () => {
+    if (fragmentIdInput.value != "") {
+      getFragmentData(user, fragmentIdInput.value, '.gif');
+      return;
+    }
+    throw new Error("Please enter a fragment ID");
+  };
+
+  convToJSON.onclick = () => {
+    if (fragmentIdInput.value != "") {
+      getFragmentData(user, fragmentIdInput.value, '.json');
       return;
     }
     throw new Error("Please enter a fragment ID");
   };
 
   sendBtn.onclick = () => {
+    if (imageInput.style.display === "block") {
+      if (imageInput.value === "") {
+        throw new Error("Please enter a fragment");
+      }
+      postUserFragment(user, imageInput.value, dropDownMenu.value);
+      return;
+    }
     postUserFragment(user, fragmentInput.value, dropDownMenu.value);
   };
 
